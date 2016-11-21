@@ -15,6 +15,7 @@
 (0) Define pieces, max moves
 (0) Define embarkation status of pieces (e.g. embarked on Elephant, embarked on Galleon)
 (0) Define legal spaces for pieces
+(0) Define killables
 (0) Implement ports
 
 -| Turn Implementation |-

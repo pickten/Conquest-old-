@@ -1,0 +1,30 @@
+=| Checklist of Things to Do |=
+
+-| Logistics |-
+(1) Get a repo
+(0) Learn how to use repo
+(0) Get a copy of Conquest for reference
+
+-| Map Implementation |-
+(0) Create basic node system
+(0) Define land/sea nodes
+(0) Define ports
+(0) Define capitals
+
+-| Piece Implementation |-
+(0) Define pieces, max moves
+(0) Define embarkation status of pieces (e.g. embarked on Elephant, embarked on Galleon)
+(0) Define legal spaces for pieces
+(0) Implement ports
+
+-| Turn Implementation |-
+(0) Define players (moves left, whos turn it is)
+(0) Define capture rules (including combo)
+(0) Define win conditions, incl. draw
+
+-| Graphics |-
+(0) Draw/scan/whatever map
+(0) Draw/scan/whatever pieces
+(0) Map nodes onto map
+(0) Map pieces onto nodes
+(0) Get map updating with moves

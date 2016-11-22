@@ -6,10 +6,11 @@
 (0) Get a copy of Conquest for reference
 
 -| Map Implementation |-
-(0) Create basic node system
-(0) Define land/sea nodes
-(0) Define ports
-(0) Define capitals
+(1) Create basic node system
+(1) Define land/sea nodes
+(1) Define ports
+(1) Define capitals
+(0) Actually link the nodes
 
 -| Piece Implementation |-
 (0) Define pieces, max moves

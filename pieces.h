@@ -7,6 +7,20 @@ struct piece;
 struct pieceAction;
 struct nodeAction;
 
+struct intPiece {
+  int num;
+  struct piece* piece;
+};
+
+  
+
+struct intPieceAction {
+  bool defaultState;
+  int exceptionCount;
+  struct intPiece* exceptions;
+};
+
+  
 
 struct pieceAction {
   int exceptionCount;
@@ -30,9 +44,13 @@ struct pieceType {
 
   struct pieceAction* kill;
   
-  struct pieceAction* carry;
+  struct intPieceAction* carry;
+  int carryCap;
+  
 
   struct pieceAction* combo;
+
+  struct intPieceAction* recapture;
 
   struct nodeAction* travel;
 
@@ -40,13 +58,14 @@ struct pieceType {
 
   struct pieceAction* dismountAttack;
   
-  
 };
 
 struct pieceType* parsePieceType(char* fileName);  /* Parse a file and grab all the pieceTypes in order by id */
 
 
 struct piece {
+  int id;  /* we'll sort by this */
+  
 
   int movesLeft;
 

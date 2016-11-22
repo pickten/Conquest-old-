@@ -21,7 +21,7 @@ struct AFFIX(stack, STACK_TYPE) {
 };
 
 /* make a new stack; not much of interest in here */
-struct AFFIX(stack, STACK_TYPE)* newStack(void);
+struct AFFIX(stack, STACK_TYPE)* AFFIX(newStack, STACK_TYPE)(void);
 
 /* pop the stack */
 struct STACK_TYPE * AFFIX(popStack, STACK_TYPE) (struct AFFIX(stack, STACK_TYPE) *s);

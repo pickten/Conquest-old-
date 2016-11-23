@@ -1,4 +1,5 @@
 typedef struct Node {
+<<<<<<< HEAD
   struct Node * adj0 = NULL;
   struct Node * adj1 = NULL;
   struct Node * adj2 = NULL;
@@ -19,3 +20,4 @@ int mapinit();
 int testpmapinit();
 
 void freeallnodes();
+

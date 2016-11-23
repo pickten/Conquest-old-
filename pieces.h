@@ -32,7 +32,7 @@ struct pieceAction {
 struct nodeAction {
   int exceptionCount;
   bool defaultState;
-  struct nodeType* exceptions;
+  char* exceptions;  /* since node types are chars */
 };
 
   

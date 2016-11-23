@@ -31,7 +31,7 @@ struct STACK_TYPE * AFFIX(peekStack, STACK_TYPE) (struct AFFIX(stack, STACK_TYPE
 
 
 /* push to the stack */
-struct AFFIX(stack, STACK_TYPE)* pushStack(struct AFFIX(stack, STACK_TYPE) *s, struct STACK_TYPE* item);
+struct AFFIX(stack, STACK_TYPE)* AFFIX(pushStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *s, struct STACK_TYPE* item);
 
 
 #endif

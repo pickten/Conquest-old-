@@ -13,8 +13,10 @@ struct AFFIX(stack, STACK_TYPE)* AFFIX(newStack, STACK_TYPE)(void){
 }
 
 struct STACK_TYPE * AFFIX(popStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *s){
-  struct STACK_TYPE * ans = s->data->item;
+  if(s->data == NULL)
+    return NULL;
   
+  struct STACK_TYPE * ans = s->data->item;
   s->data = s->data->next;
   s->count--;
   return ans;
@@ -23,6 +25,9 @@ struct STACK_TYPE * AFFIX(popStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) 
 
 
 struct STACK_TYPE * AFFIX(peekStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *s){
+  if(s->data == NULL)
+    return NULL;
+  
   return s->data->item;
 }
 

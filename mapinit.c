@@ -1,11 +1,13 @@
-#include <mapinit.h>
+#include "mapinit.h"
+#include <stdlib.h>
+#include <string.h>
 
 int mapinit(input) {
   /* Returns an array of pointers to nodes; each node contains pointers to its adjacent nodes.
    * If there is no file matching the input, it returns 0.
    */
   Node *head = malloc(sizeof(Node));
-  if (input == "test") {
+  if (strcmp(*input, "test") == 0) {
     testmapinit(head);
   }
   else {
@@ -15,7 +17,7 @@ int mapinit(input) {
 }
 
 
-testmapinit(head) {
+int testmapinit(head) {
   /* initializing the nodes */
   Node * node1;
   Node * node2;
@@ -30,7 +32,9 @@ testmapinit(head) {
   Node * node11;
   Node * node12;
   Node * node13;
-  Noee * node14;
+  Node * node14;
+  nodes[14] = {node1, node2, node3, node4, node5, node6, node7, node8, node9, node10,
+		   node11, node12, node13, node14};
   /* head node - CAPITOL*/
   head->adj0 = node1;
   head->adj1 = node2;

@@ -34,4 +34,6 @@ struct STACK_TYPE * AFFIX(peekStack, STACK_TYPE) (struct AFFIX(stack, STACK_TYPE
 struct AFFIX(stack, STACK_TYPE)* AFFIX(pushStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *s, struct STACK_TYPE* item);
 
 
+void AFFIX(deleteStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *data);
+
 #endif

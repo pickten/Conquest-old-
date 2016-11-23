@@ -20,5 +20,6 @@ struct AFFIX(linked, LINKED_TYPE) {
 /* make a new void_ll; pretty trivial */
 struct AFFIX(linked, LINKED_TYPE)* AFFIX(newLinked, LINKED_TYPE)(struct LINKED_TYPE *item, struct AFFIX(linked, LINKED_TYPE) *data);
 
+void AFFIX(deleteLinked, LINKED_TYPE)(struct AFFIX(linked, LINKED_TYPE) *data);
 
 #endif

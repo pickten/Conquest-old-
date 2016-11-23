@@ -37,3 +37,8 @@ struct AFFIX(stack, STACK_TYPE)* AFFIX(pushStack, STACK_TYPE)(struct AFFIX(stack
   return s;
   
 }
+
+void AFFIX(deleteStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *data){
+  AFFIX(deleteLinked, STACK_TYPE)(data->data);
+  free(data);
+}

@@ -1,13 +1,19 @@
 #include "mapinit.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-int mapinit(input) {
+Node *nodes[14];
+
+int testmapinit(Node *head);
+
+Node* mapinit(char *input) {
   /* Returns an array of pointers to nodes; each node contains pointers to its adjacent nodes.
    * If there is no file matching the input, it returns 0.
    */
+  // char mapChoice = *input;
   Node *head = malloc(sizeof(Node));
-  if (strcmp(*input, "test") == 0) {
+  if (strcmp(input, "test") == 0) {
     testmapinit(head);
   }
   else {
@@ -17,7 +23,7 @@ int mapinit(input) {
 }
 
 
-int testmapinit(head) {
+Node* testmapinit(Node *head) {
   /* initializing the nodes */
   Node * node1;
   Node * node2;
@@ -33,8 +39,9 @@ int testmapinit(head) {
   Node * node12;
   Node * node13;
   Node * node14;
-  nodes[14] = {node1, node2, node3, node4, node5, node6, node7, node8, node9, node10,
-		   node11, node12, node13, node14};
+  // Node * nodes[14]();
+  nodes = (&node1, &node2, &node3, &node4, &node5, &node6, &node7, &node8, &node9, &node10, &node11,
+	   &node12, &node13, &node14);
   /* head node - CAPITOL*/
   head->adj0 = node1;
   head->adj1 = node2;
@@ -104,16 +111,29 @@ int testmapinit(head) {
   node14->adj0 = node11;
   node14->adj1 = node12;
   node14->type = "S";
+  /* all done with nodes */
+  return nodes;
 }
 
-void freeallnodes(node) {
-  /* THIS NEEDS TO BE RUN AT THE END OF EVERY GAME SO WE DON'T HAVE A MEMORY LEAK 
+void printNodes(nodes) {
+  int i = 0;
+  for (; i < 14; i++) {
+    int nodeSize = sizeof(Node);
+    char *currentNodeType = nodes[i]->type;
+    printf("node%d type: %s", i, currentNodeType);
+    }
+}
+
+/*
+void freeallnodes(Node node) {
+   * THIS NEEDS TO BE RUN AT THE END OF EVERY GAME SO WE DON'T HAVE A MEMORY LEAK 
    * (if we use a malloc implementation, i.e. nodes defining nodes)
-   */
+   *
   int len = (sizeof(nodes) / sizeof(nodes[0]));
   int i = 0;
-  for (i; i < len; i++) {
+  for (; i < len; i++) {
     free(nodes[i]);
   }
   return;
 }
+*/

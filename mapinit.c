@@ -5,28 +5,28 @@
 
 Node *nodes[14];
 
-int testmapinit(Node *head);
+Node* testmapinit(Node *node0);
 
 Node* mapinit(char *input) {
   /* Returns an array of pointers to nodes; each node contains pointers to its adjacent nodes.
    * If there is no file matching the input, it returns 0.
    */
   // char mapChoice = *input;
-  Node *head = malloc(sizeof(Node));
+  Node *node0 = malloc(sizeof(Node));
   if (strcmp(input, "test") == 0) {
-    testmapinit(head);
+    testmapinit(node0);
   }
   else {
     return 0;
   }
-  return nodes;
+  return node0;
 }
 
 
-Node* testmapinit(Node *head) {
+Node* testmapinit(Node *node0) {
   /* initializing the nodes */
-  Node * node1;
-  Node * node2;
+  Node node1;
+  Node node2;
   Node * node3;
   Node * node4;
   Node * node5;
@@ -40,20 +40,20 @@ Node* testmapinit(Node *head) {
   Node * node13;
   Node * node14;
   // Node * nodes[14]();
-  nodes = (&node1, &node2, &node3, &node4, &node5, &node6, &node7, &node8, &node9, &node10, &node11,
-	   &node12, &node13, &node14);
+  nodes[0] = node0;
+  nodes[1] = node1;
   /* head node - CAPITOL*/
-  head->adj0 = node1;
-  head->adj1 = node2;
-  head->adj2 = node9;
-  head->type = "L";
+  node0->adj0 = node1;
+  node0->adj1 = node2;
+  node0->adj2 = node9;
+  node0->type = "L";
   /* node1 */
-  node1->adj0 = head;
+  node1->adj0 = node0;
   node1->adj1 = node2;
   node1->adj2 = node3;
   node1->type = "L";
   /* node2 */
-  node2->adj0 = head;
+  node2->adj0 = node0;
   node2->adj1 = node1;
   node2->adj2 = node4;
   node2->type = "L";
@@ -86,7 +86,7 @@ Node* testmapinit(Node *head) {
   node8->adj1 = node13;
   node8->type = "S";
   /* node9 */
-  node9->adj0 = head;
+  node9->adj0 = node0;
   node9->adj1 = node10;
   node8->type = "S";
   /* node10 */
@@ -112,10 +112,10 @@ Node* testmapinit(Node *head) {
   node14->adj1 = node12;
   node14->type = "S";
   /* all done with nodes */
-  return nodes;
+  return node0;
 }
 
-void printNodes(nodes) {
+void printNodes(Node *node0) {
   int i = 0;
   for (; i < 14; i++) {
     int nodeSize = sizeof(Node);

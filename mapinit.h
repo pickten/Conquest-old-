@@ -14,12 +14,12 @@ typedef struct Node {
 	      */
 }Node;
 
-extern Node * nodes;
+extern Node * nodes[14];
 
 Node* mapinit(char *input);
 
-Node* testpmapinit(Node *head);
+Node* testpmapinit(Node *node0);
 
-void printNodes(nodes);
+void printNodes(Node *node0);
 
-void freeallnodes();
+// void freeallnodes();

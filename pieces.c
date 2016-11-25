@@ -7,15 +7,14 @@ void deletePiece(struct piece *p){
 }
 
 void deletePieceType(struct pieceType *p){
-  free(p->Carry);
-  free(p->Combo);
-  free(p->DismountAttack);
-  free(p->Kill);
-  free(p->MountAttack);
-  free(p->Recapture);
-  free(p->Travel);
+  deleteIntPieceAction(p->Carry);
+  deletePieceAction(p->Combo);
+  deletePieceAction(p->DismountAttack);
+  deletePieceAction(p->Kill);
+  deletePieceAction(p->MountAttack);
+  deleteIntPieceAction(p->Recapture);
+  deleteNodeAction(p->Travel);
   free(p);
-  
 }
 
 void deleteIntPiece(struct intPiece *p){
@@ -60,6 +59,13 @@ struct pieceType* newPieceType(int id){
   if(a == NULL)
     return NULL;
   a->id = id;
+  a->Carry = emptyIntPieceAction(false);
+  a->Combo = emptyPieceAction(true);
+  a->DismountAttack = emptyPieceAction(true);
+  a->Kill = emptyPieceAction(true);
+  a->MountAttack = emptyPieceAction(false);
+  a->Recapture = emptyIntPieceAction(true);
+  a->Travel = emptyNodeAction(true);
   return a;
 }
 

@@ -44,7 +44,7 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
     return AFFIX(newRBTree, RBTREE_TYPE)(false, newval, AFFIX(emptyRBTree, RBTREE_TYPE)(), AFFIX(emptyRBTree, RBTREE_TYPE)());
   
   struct RBTREE *node = tree;
-  struct AFFIX(stack, RBTREE) *nodes = AFFIX(newStack, RBTREE)(); /* flycheck was yelling about this line but I think it's actualy ok */
+  struct AFFIX(stack, RBTREE) *ancestorStack = AFFIX(newStack, RBTREE)(); /* flycheck was yelling about this line but I think it's actualy ok */
   
   
   while(node != NULL){
@@ -53,11 +53,11 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
     
     int x = node->item->id;
     if(x == newval->id){  /* we assume we aren't being given NULL; that's a really rude thing to input, after all */
-      AFFIX(deleteStack, RBTREE)(nodes);  /* all done here, time to exit */
+      AFFIX(deleteStack, RBTREE)(ancestorStack);  /* all done here, time to exit */
       return tree;
     }
     
-    AFFIX(pushStack, RBTREE)(nodes, node);
+    AFFIX(pushStack, RBTREE)(ancestorStack, node);
     
     if(x > newval->id) {
       node = node->left;
@@ -66,9 +66,9 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
     }
     
   }
-  // Recap: either we found it (instabreak) or node is leaf, nodes is a stack of all previous nodes
+  // Recap: either we found it (instabreak) or node is leaf, ancestorStack is a stack of all previous ancestorStack
 
-  struct RBTREE *parent = AFFIX(peekStack, RBTREE)(nodes);
+  struct RBTREE *parent = AFFIX(peekStack, RBTREE)(ancestorStack);
   struct RBTREE *grandparent;
   struct RBTREE *uncle;
   bool lastLeft = parent->left == node;  /* initialization stuff */
@@ -92,20 +92,20 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
   
   while(true){
     
-    if(nodes->count == 0) {  /* At the head of the tree */
+    if(ancestorStack->count == 0) {  /* At the head of the tree */
       node->color = false;   /* just to be sure */
       
-      AFFIX(deleteStack, RBTREE)(nodes);  /* be a good person */
+      AFFIX(deleteStack, RBTREE)(ancestorStack);  /* be a good person */
       return node;  /* finish */
     }
 
-    parent = AFFIX(popStack, RBTREE)(nodes);
+    parent = AFFIX(popStack, RBTREE)(ancestorStack);
     lastLeft = parent->left == node;
   
     /* done if parent is black */
     /* since we can't have a new RR, path lengths are still good, so we're done */
     if(!parent->color){  
-      AFFIX(deleteStack, RBTREE)(nodes);
+      AFFIX(deleteStack, RBTREE)(ancestorStack);
       return tree;
     }
   
@@ -113,7 +113,7 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
 
     /* first, we eliminate the case of a red uncle */
 
-    grandparent = AFFIX(popStack, RBTREE)(nodes);   // must exist because root was black
+    grandparent = AFFIX(popStack, RBTREE)(ancestorStack);   // must exist because root was black
 
     lastLeft = grandparent->left == parent;  /* knew I should've taken that left at Albuquerque */
 
@@ -131,9 +131,9 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
 
   /* so we have a red parent and black uncle/grandparent, and we're red */
 
-  struct RBTREE *greatgp = AFFIX(popStack, RBTREE)(nodes);  /* used for the final rotation */
+  struct RBTREE *greatgp = AFFIX(popStack, RBTREE)(ancestorStack);  /* used for the final rotation */
   
-  AFFIX(deleteStack, RBTREE)(nodes);  /* don't need this anymore */
+  AFFIX(deleteStack, RBTREE)(ancestorStack);  /* don't need this anymore */
 
   bool parentdir = grandparent->left == parent;
   bool dir = parent->left == node;
@@ -207,14 +207,14 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
   if(tree == NULL)
     return NULL;
 
-  struct AFFIX(stack, RBTREE) *nodes = AFFIX(newStack, RBTREE)(); /* flycheck was yelling about this line but I think it's actualy ok */
+  struct AFFIX(stack, RBTREE) *ancestorStack = AFFIX(newStack, RBTREE)(); /* flycheck was yelling about this line but I think it's actualy ok */
   
   struct RBTREE *node = tree;
   
   
   while(node != NULL){
     if(node->item == NULL){
-      AFFIX(deleteStack, RBTREE)(nodes);  
+      AFFIX(deleteStack, RBTREE)(ancestorStack);  
       return NULL;
     }
     
@@ -223,7 +223,7 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
     if(x == id)
       break;
     
-    AFFIX(pushStack, RBTREE)(nodes, node);
+    AFFIX(pushStack, RBTREE)(ancestorStack, node);
     
     
     if(x > id)
@@ -238,12 +238,12 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
   bool righthalf = node->right->item != NULL;  /* what side are we working on? */
   
   struct RBTREE *min = righthalf ? node->right : node->left;
-  AFFIX(pushStack, RBTREE)(nodes, node);
+  AFFIX(pushStack, RBTREE)(ancestorStack, node);
   
   
   while(min != NULL){
     if(min->item == NULL || (righthalf ? min->left : min->right) == NULL){
-      AFFIX(deleteStack, RBTREE)(nodes);
+      AFFIX(deleteStack, RBTREE)(ancestorStack);
       return NULL;
     }
 
@@ -253,11 +253,11 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
       break;  
     }
 
-    AFFIX(pushStack, RBTREE)(nodes, min);
+    AFFIX(pushStack, RBTREE)(ancestorStack, min);
     min = righthalf ? min->left : min->right;  /* down down dooby dooby down */
   }
 
-  struct RBTREE *parent = AFFIX(popStack, RBTREE)(nodes);
+  struct RBTREE *parent = AFFIX(popStack, RBTREE)(ancestorStack);
 
   if(parent == NULL){
 
@@ -265,7 +265,7 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
     node->item = NULL;
     node->color = false;
     
-    AFFIX(deleteStack, RBTREE)(nodes);
+    AFFIX(deleteStack, RBTREE)(ancestorStack);
     return ans;
     
   }
@@ -278,13 +278,13 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
       parent->left = NULL;
     else
       parent->right = NULL;
-    AFFIX(deleteStack, RBTREE)(nodes);
+    AFFIX(deleteStack, RBTREE)(ancestorStack);
     return ans;
   }
 
   /* to recap:
      - node is a node with at least one leaf child that needs to be removed, and parent is its parent
-     - nodes holds the ancestry of the parent
+     - ancestorStack holds the ancestry of the parent
    */
   struct RBTREE *child = (node->right->item == NULL) ? node->left : node->right;
   // we guarantee that child's sibling will always be a leaf
@@ -300,7 +300,7 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
   if(node->color){
     // we were OK if the original was red.
     
-    AFFIX(deleteStack, RBTREE)(nodes);
+    AFFIX(deleteStack, RBTREE)(ancestorStack);
     return ans;
   }
 
@@ -308,25 +308,25 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
   // if we have a red child we can still do this, but need to repaint.
   if(child->color){
     child->color = false;
-    AFFIX(deleteStack, RBTREE)(nodes);
+    AFFIX(deleteStack, RBTREE)(ancestorStack);
     return ans;
   }
   
   node = child;
   struct RBTREE *sibling = dir ? parent->right : parent->left; // node's sibling
-  struct RBTREE *grandparent = AFFIX(popStack, RBTREE)(nodes);
+  struct RBTREE *grandparent = AFFIX(popStack, RBTREE)(ancestorStack);
   bool parentdir = grandparent->left == parent;
   
   
   while(true){ // time to climb the tree
     
-    if(nodes->count == 0){
+    if(ancestorStack->count == 0){
       // at the root
-      AFFIX(deleteStack, RBTREE)(nodes);
+      AFFIX(deleteStack, RBTREE)(ancestorStack);
       return ans;
     }
 
-    if(sibling->color){ // sibling cannot be leaf because that side has more black nodes than our side
+    if(sibling->color){ // sibling cannot be leaf because that side has more black ancestorStack than our side
       // rotate the parent and make it red,
       // this removes a red from its side and adds a black to our side
       sibling->color = false; 
@@ -344,7 +344,7 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
         grandparent->left = sibling;
       else
         grandparent->right = sibling;
-      AFFIX(deleteStack, RBTREE)(nodes);
+      AFFIX(deleteStack, RBTREE)(ancestorStack);
       return ans;
     }
 
@@ -360,18 +360,18 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
     parent = grandparent;
     dir = parentdir;
     sibling = dir ? parent->right : parent->left;
-    grandparent = AFFIX(popStack, RBTREE)(nodes);
+    grandparent = AFFIX(popStack, RBTREE)(ancestorStack);
     parentdir = grandparent->left == parent;
       
   } // finally done with the loop
 
-  AFFIX(deleteStack, RBTREE)(nodes);
+  AFFIX(deleteStack, RBTREE)(ancestorStack);
 
   if(parent->color && (!sibling->left->color) && (!sibling->right->color)){
     // we can just swap the colors, like our rotation trick before but safer and easier
     parent->color = false;
     sibling->color = true;
-    AFFIX(deleteStack, RBTREE)(nodes);
+    AFFIX(deleteStack, RBTREE)(ancestorStack);
     return ans;
   }
 

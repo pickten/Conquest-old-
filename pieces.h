@@ -1,7 +1,7 @@
-#include <stdbool.h>
 #ifndef PIECES_H
 #define PIECES_H
-
+#include <stdbool.h>
+#include "genericmacros.h"
 
 
 struct pieceType;
@@ -63,25 +63,26 @@ struct pieceType {
   int id;       /* used to get the piece type when parsing */
   
 
-  struct pieceAction* kill;
+  struct pieceAction* Kill; // they're uppercased for reason (i.e. I'm lazy)
   
-  struct intPieceAction* carry;
+  struct intPieceAction* Carry;
   int carryCap;
   
 
-  struct pieceAction* combo;
+  struct pieceAction* Combo;
 
-  struct intPieceAction* recapture;
+  struct intPieceAction* Recapture;
 
-  struct nodeAction* travel;
+  struct nodeAction* Travel;
 
-  struct pieceAction* mountAttack;
+  struct pieceAction* MountAttack;
 
-  struct pieceAction* dismountAttack;
+  struct pieceAction* DismountAttack;
   
 };
 
-struct pieceType* parsePieceType(char* fileName);  /* Parse a file and grab all the pieceTypes in order by id */
+struct pieceType* parsePieceType(char* fileName);
+/* Parse a file and grab all the pieceTypes in order by id */
 
 
 struct piece {
@@ -97,6 +98,16 @@ struct piece {
 };
 
 
+#define CANDOTHIS(name, type) bool can ## name ## Raw(struct pieceType *x, int id)
 
 
+CANDOTHIS(Kill, pieceType);
+CANDOTHIS(Carry, intPiece);
+CANDOTHIS(Combo, pieceType);
+CANDOTHIS(Recapture, intPiece);
+CANDOTHIS(Travel, charWrapper);
+CANDOTHIS(MountAttack, pieceType);
+CANDOTHIS(DismountAttack, pieceType);
+
+#undef CANDOTHIS
 #endif  /* PIECES_H */

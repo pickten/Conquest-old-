@@ -37,7 +37,9 @@
 *.h~
 *.swp
 *.hs~
+*.cabal~
+*.yaml~
 
 # Stack files
-/Conquest-Config-Gen/.stackwork/
-*.stackwork/*
+/Conquest-Config-Gen/.stack-work/
+*.stack-work/*

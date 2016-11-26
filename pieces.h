@@ -67,8 +67,7 @@ struct nodeAction {
 struct pieceType {
   int maxMoves;  /* how many moves the piece can take in one turn */
   int id;       /* used to get the piece type when parsing */
-  
-
+  char *name;
   struct pieceAction* Kill; // they're uppercased for reason (i.e. I'm lazy)
   
   struct intPieceAction* Carry;

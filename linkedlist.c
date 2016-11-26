@@ -24,3 +24,5 @@ void AFFIX(deleteLinked, LINKED_TYPE)(struct AFFIX(linked, LINKED_TYPE) *data){
   
     
 }
+
+#undef LINKED_TYPE

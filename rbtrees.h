@@ -10,7 +10,9 @@ struct RBTree_placeholder {void* item; int id;};
 
 #if NDEF(AFFIX(RBTREES_H, RBTREE_TYPE))  /* you'll have to define this manually. Sorry! But it's just not possible to autodefine when doing this */
 
-
+#ifndef RBTREE_COMPARSION
+#define RBTREE_COMPARISON(x) x->id
+#endif
 
 struct AFFIX(RBTree, RBTREE_TYPE) {
   bool color;
@@ -29,7 +31,8 @@ struct AFFIX(RBTree, RBTREE_TYPE)* AFFIX(emptyRBTree, RBTREE_TYPE)(void);  /* ge
 
 bool AFFIX(verifyRBTree, RBTREE_TYPE) (struct AFFIX(RBTree, RBTREE_TYPE) *tree);  /* Verify that a tree satisfies the RB properties. Unusued. */
 
-struct AFFIX(RBTree, RBTREE_TYPE)* AFFIX(insertRB, RBTREE_TYPE) (struct AFFIX(RBTree, RBTREE_TYPE) *tree, struct RBTREE_TYPE *newval); /* Insert a value into the tree */
+struct AFFIX(RBTree, RBTREE_TYPE)* AFFIX(insertRB, RBTREE_TYPE) (struct AFFIX(RBTree, RBTREE_TYPE) *tree, struct RBTREE_TYPE *newval);
+/* Insert a value into the tree, overwriting any there already */
 
 struct RBTREE_TYPE * AFFIX(findRB, RBTREE_TYPE) (struct AFFIX(RBTree, RBTREE_TYPE) *tree, int id); /* Locate a specific ID */
 

@@ -42,3 +42,5 @@ void AFFIX(deleteStack, STACK_TYPE)(struct AFFIX(stack, STACK_TYPE) *data){
   AFFIX(deleteLinked, STACK_TYPE)(data->data);
   free(data);
 }
+
+#undef STACK_TYPE

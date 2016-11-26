@@ -35,3 +35,9 @@
 # Emacs files
 *.c~
 *.h~
+*.swp
+*.hs~
+
+# Stack files
+/Conquest-Config-Gen/.stackwork/
+*.stackwork/*

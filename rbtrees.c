@@ -51,15 +51,16 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
     if(node->item == NULL)
       break;
     
-    int x = node->item->id;
-    if(x == newval->id){  /* we assume we aren't being given NULL; that's a really rude thing to input, after all */
+    int x = RBTREE_COMPARISON(node->item);
+    if(x == RBTREE_COMPARISON(newval)){  /* we assume we aren't being given NULL; that's a really rude thing to input, after all */
       AFFIX(deleteStack, RBTREE)(ancestorStack);  /* all done here, time to exit */
+      node->item = newval;
       return tree;
     }
     
     AFFIX(pushStack, RBTREE)(ancestorStack, node);
     
-    if(x > newval->id) {
+    if(x > RBTREE_COMPARISON(newval)) {
       node = node->left;
     } else {
       node = node->right;
@@ -187,7 +188,7 @@ struct RBTREE * AFFIX(insertRB, RBTREE_TYPE) (struct RBTREE *tree, struct RBTREE
 struct RBTREE_TYPE * AFFIX(findRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
   struct RBTREE *node = tree;
   while(node != NULL){
-    int x = node->item->id;
+    int x = RBTREE_COMPARISON(node->item);
     /* This is probably a bad idea but I think it's reasonable to assume an id field.
        Regardless, an easy change */
     
@@ -218,7 +219,7 @@ struct RBTREE_TYPE * AFFIX(removeRB, RBTREE_TYPE) (struct RBTREE *tree, int id){
       return NULL;
     }
     
-    int x = node->item->id;
+    int x = RBTREE_COMPARISON(node->item);
     
     if(x == id)
       break;
@@ -428,3 +429,5 @@ void AFFIX(deleteRB, RBTREE_TYPE)(struct RBTREE *data) {
 
 
 #undef RBTREE  /* just to be on the safe side */
+#undef RBTREE_COMPARISON
+#undef RBTREE_TYPE

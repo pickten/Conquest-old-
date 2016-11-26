@@ -14,6 +14,7 @@ void deletePieceType(struct pieceType *p){
   deletePieceAction(p->MountAttack);
   deleteIntPieceAction(p->Recapture);
   deleteNodeAction(p->Travel);
+  free(p->name);
   free(p);
 }
 

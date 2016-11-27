@@ -3,6 +3,7 @@ typedef struct Node {
   struct Node * adj1;
   struct Node * adj2;
   struct Node * adj3;
+  int id;
   /* I've defined four adj nodes just in case there is a board that
    * needs that many. Each node has pointers to its adjacent nodes purely for the
    * purpose of checking validity of moves without too much mucking.
@@ -22,4 +23,32 @@ void testpmapinit();
 
 void printNodes(Node *node0);
 
-// void freeallnodes();
+/* EXPERIMENTAL SHIT */
+
+void newNode(int id, char type);
+
+typedef struct Piece {
+  /* placeholder piece struct */
+  int type;
+}Piece;
+
+typedef struct expNode {
+  /* experimental malloc'd node type */
+  int id;
+  int adj1id;
+  int adj2id;
+  int adj3id;
+  int adj4id;
+  char type;
+  Piece *piece;
+}expNode;
+
+void destructNode(int id);
+
+void freeallnodes();
+
+extern Node * expnodes[];
+
+void attachPieceToNode(int id, Piece *toAdd);
+
+Piece getPieceFromNode(int id);

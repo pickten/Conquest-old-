@@ -40,6 +40,7 @@ void deleteNodeAction(struct nodeAction *p){
 }
 
 void deleteCharWrapper(struct charWrapper *p){
+  free(p->c);
   free(p);
 }
 
@@ -107,7 +108,7 @@ struct nodeAction* newNodeAction(bool d, struct RBTree_charWrapper *p){
 }
 
 
-struct charWrapper* newCharWrapper(char c){
+struct charWrapper* newCharWrapper(char *c){
   struct charWrapper  *a = malloc(sizeof(struct charWrapper));
   if(a == NULL)
     return NULL;
@@ -132,7 +133,7 @@ struct nodeAction* emptyNodeAction(bool d){
 }
 
 struct charWrapper* emptyCharWrapper(void){
-  return newCharWrapper('\0');
+  return newCharWrapper(NULL);
 }
 
 

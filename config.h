@@ -4,6 +4,8 @@
 #include "mapinit.h"
 #include "pieces.h"
 
+#define Node expnode
+
 #define RBTREE_TYPE Node
 #include "rbtrees.h"
 #define RBTREES_H_Node 1

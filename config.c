@@ -5,6 +5,8 @@
 #include "mapinit.h"
 #include "pieces.h"
 
+#define NEWNODE(a,b) (newNode(a,b), expnodes[a])
+
 struct intint *newIntint(int a, int b, char c, int d){
   struct intint  *x = malloc(sizeof(struct intint));
   if(x == NULL)
@@ -23,7 +25,7 @@ struct config *newConfig(void){
   struct config  *a = malloc(sizeof(struct config));
   if(a == NULL)
     return NULL;
-  a->map = newNode();
+  a->map = NEWNODE(-1,NULL);
   a->allNodes = emptyRBTree_Node();
   
   a->types = emptyRBTree_pieceType();
@@ -69,12 +71,12 @@ struct environment *newPieceTypeEnv(struct environment *e){
 }
 
   
-struct environment *newNodeEnv(struct environment *e){
+struct environment *NEWNODEEnv(struct environment *e){
   if(e->node != NULL) {
     return e;
   }
   
-  e->node = newNode(e->nodeID++);
+  e->node = NEWNODE(e->nodeID++);
   return e;
 }
 
@@ -170,12 +172,12 @@ struct environment *parseFileEnv(struct config *c, struct environment *e, char *
         }
         
         
-        attachPieceToNode(e->node, newPiece(e->pieceID++, findRB_pieceType(c->types, lineis)));
+        attachPieceToNode(e->node->id, newPiece(e->pieceID++, findRB_pieceType(c->types, lineis)));
       } else if(e->preambleLines == 1) {
         e->preambleLines++;
-        givePlayerPiece(atoi(line), getPieceFromNode(e->node));
+        givePlayerPiece(atoi(line), getPieceFromNode(e->node->id));
       } else if(e->preambleLines == 2) {
-        e->node->type = line;
+        e->node->type = strcpy(malloc(sizeof(char[100])), line);
         e->preambleLines++;
         
       } else {
@@ -235,13 +237,13 @@ struct environment *parseFileEnv(struct config *c, struct environment *e, char *
       e->actionType = line[0];
 
     } else if(line[0] == '('){
-      e->node = newNode(e->nodeID++);
+      e->node = NEWNODE(e->nodeID++, NULL);
       e->preambleLines = 0;
       
     } else if (line[0] == '{') {
       e->actionType = '}';
       e->type = newPieceType(e->typeID++);
-      e->type->name = line + 1;
+      e->type->name = strcpy(malloc(sizeof(char[100])), line + 1);
       e->preambleLines = 0;
       
     } else {
@@ -325,5 +327,5 @@ struct config *parseFile(char *f) {
   return parseFileRaw(fopen(f, "r"));
 }
 
-
-
+#undef NEWNODE
+#undef Node

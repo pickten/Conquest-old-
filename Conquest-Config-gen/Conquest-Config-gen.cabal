@@ -21,3 +21,6 @@ executable genconfig
                      , directory >= 1.2 && < 2
                      , parsec >= 3.1 && < 4
                      , mtl >= 2.2 && < 3
+                     , text >= 1.2 && < 2
+                     , vty >= 5.11 && < 6
+                     , data-default >= 0.5 && < 1

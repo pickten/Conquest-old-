@@ -38,7 +38,7 @@ struct intPiece {
 };
 
 struct charWrapper {
-  char c;
+  char *c;
 };
 
   
@@ -112,7 +112,7 @@ struct intPiece* newIntPiece(int i, struct pieceType *p);
 struct pieceAction* newPieceAction(bool d, struct RBTree_pieceType *p);
 struct intPieceAction* newIntPieceAction(bool d, struct RBTree_intPiece *p);
 struct nodeAction* newNodeAction(bool d, struct RBTree_charWrapper *p);
-struct charWrapper* newCharWrapper(char c);
+struct charWrapper* newCharWrapper(char *c);
 
 
 struct intPiece* emptyIntPiece(struct pieceType *p);

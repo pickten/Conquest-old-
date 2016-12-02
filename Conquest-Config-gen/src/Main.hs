@@ -1,9 +1,11 @@
 {-# LANGUAGE TupleSections #-}
 module Main where
+import Prompting.Display
 import Prompting
 import Parsing
 import Data.Map ((!), Map)
 import qualified Data.Map as Map
+import qualified Data.Text.IO as T
 import Text.Parsec
 import Text.Parsec.Language (haskellDef)
 import qualified Text.Parsec.Token as Tok
@@ -32,7 +34,7 @@ main = do
                 fcollaps <- promptYN "I found one or more includes. Should I collapse them into one file? (Warning: answering no will quit)"
                 if fcollaps
                   then do
-                  writeFile f o
+                  T.writeFile f o
                   main2 f
                   else
                   putStrLn "Unfortunately, I can't yet edit multi-file configs."
@@ -45,18 +47,37 @@ main = do
             else manipulate (Cfg Map.empty []) f
 
 manipulate :: Config -> String -> IO ()
-manipulate c f = do
-  promptOptions configOptions
+manipulate oc f = do
+  (m,c) <- runMainUndoMenu mainMenu
+  case m of
+    Just ff -> T.writeFile (if ff == "" then f else ff) (serializeConfig $ c oc)
+    Nothing -> return ()
   where
-    runQuit :: Config -> String -> IO ()
-    runQuit c f = do
-      q <- promptYN "Do you want to save?"
-      if q
+    mainMenu :: UndoDisplay (Maybe String, Config -> Config)
+    mainMenu = do
+      finalConfig <- mkUndoDisplay editConfig
+      k <- boolUndoInput
+      if k
         then do
-        ff <- prompt $ "What file should I write to? (default:" ++ f ++ ")"
-        writeFile (if ff == "" then f else ff) (serializeConfig c)
-        else return ()
-    configOptions :: Options
-    configOptions = makeOptions
-      [('q', "Quit", runQuit c f)]
+        s <- stringUndoInput
+        return (Just s, finalConfig)
+        else return (Nothing, finalConfig)
+        
+    editConfig :: Display (Config -> Config)
+    editConfig = do
+      c <- charInput
+      case c of
+        't' -> withText "Edit piece types" editTypes
+        'n' -> withText "Edit the map" editNodes
+        '?' -> withText "Help" $ do
+          displayHelp
+          editConfig
+        _ -> editConfig
 
+    editTypes :: Display (Config -> Config)
+    editTypes = do
+      return id
+
+    editNodes :: Display (Config -> Config)
+
+    displayHelp :: Display ()

@@ -1,5 +1,9 @@
 CC = gcc
 CFLAGS = -Wall
+HS = stack
+HSBUILD = build
+HSINSTALL = insall
+HSDIR = Conquest-Config-gen
 
 default: wipmap
 
@@ -14,3 +18,15 @@ mapinit.o:  mapinit.c mapinit.h
 
 clean:
 	$(RM) wipmap *.o *~
+
+full: default
+      config-build
+
+full-install: default
+	      config-install
+
+config-build:
+	cd $(HSDIR) && $(HS) $(HSBUILD)
+
+config-install:
+	cd $(HSDIR) && $(HS) $(HSINSTALL)

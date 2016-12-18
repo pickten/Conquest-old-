@@ -13,9 +13,17 @@ typedef struct Node {
 	      * Pl treated as land and Ps as water for the purpose of moving, but there are other 
 	      * checks that might be useful regarding port/land distinctions.
 	      */
-}Node;
+} Node;
 
-extern Node * nodes[15];
+// extern Node * nodes[15];
+
+typedef struct NodeList {
+  expNode * nodePointer;
+  struct NodeList * next;
+  int index;
+} NodeList;
+
+extern NodeList * allNodes;
 
 void mapinit(char *input);
 
@@ -30,9 +38,9 @@ void newNode(int id, char type);
 typedef struct Piece {
   /* placeholder piece struct */
   int type;
-}Piece;
+} Piece;
 
-typedef struct expNode {
+typedef struct ExpNode {
   /* experimental malloc'd node type */
   int id;
   int adj1id;
@@ -41,13 +49,11 @@ typedef struct expNode {
   int adj4id;
   char type;
   Piece *piece;
-}expNode;
+} ExpNode;
 
 void destructNode(int id);
 
 void freeallnodes();
-
-extern Node * expnodes[];
 
 void attachPieceToNode(int id, Piece *toAdd);
 

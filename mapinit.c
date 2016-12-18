@@ -22,6 +22,93 @@ void mapinit(char *input) {
   return;
 }
 
+void printNodes(Node *node0) {
+  int i = 0;
+  for (; i < 14; i++) {
+    // int nodeSize = sizeof(Node);
+    char *currentNodeType = nodes[i]->type;
+    printf("node%d type: %s", i, currentNodeType);
+    }
+}
+
+/* EXPERIMENTAL SHIT */
+
+void addNodeToList(expNode * toAdd, int id) {
+  int i;
+  NodeList * currentNode = allNodes;
+  for (i = 0; i < id; i++) {
+    currentNode = currentNode->next;
+  }
+  currentNode->next = malloc(sizeof(NodeList));
+  currentNode->nodePointer->nodePointer = toAdd;
+  currentNode->next = NULL;
+  currentNode->index = id;
+}
+
+void newNode(int id, char type) {
+  /* mallocs a node, adds its pointer to expnodes */
+  ExpNode newNode = malloc(sizeof(expNode)); /* for optimization, store sizeof(expNode) in a variable
+					     and use that when loading from a config */
+  newNode.id = id;
+  int adjIDs[4] = {NULL, NULL, NULL, NULL}
+  newnode.type = type;
+  newnode.piece = NULL;
+  addNodeToList(newNode, id);
+}
+
+void attachPieceToNode(int id, Piece *toAdd) {
+  expnodes[id]->piece = toAttach;
+  return;
+}
+
+Piece getPieceFromNode(int id) {
+  Piece toGet = nodes[id]->piece;
+  return toGet;
+}
+
+void attachLinkToNode(int id, int toLink) {
+  /* attaches a single node to Node id */
+  int i = 0;
+  expNode base = *nodes[id];
+  for(; i < 4; i++) {
+    if (base.ajdIDs[i] == NULL) {
+	base.adjIDs[i] = toLink;
+	return;
+      }
+    if (base.adjIDs[i] == toLink) {
+      return;
+    }
+  }
+  return;
+}
+
+void destructNode(int id) {
+  numNodes = sizeof(expnodes);
+  int i = 0;
+  for (; i < numNodes; i++) {
+    if (nodes[i]->id == id) {
+      free(nodes[i]);
+      return;
+    }
+  }
+  printf("node not found");
+  return;
+}
+
+void freeAllNodes(Node expNode) {
+  /* THIS NEEDS TO BE RUN AT THE END OF EVERY GAME SO WE DON'T HAVE A MEMORY LEAK 
+   * (if we use a malloc implementation)
+   */
+  numNodes = sizeof(expnodes);
+  int i = 0;
+  for (; i < numNodes; i++) {
+    free(nodes[i]);
+  }
+  return;
+}
+
+
+
 void testmapinit() {
   /* initializing the nodes */
   extern Node node0;
@@ -140,80 +227,5 @@ void testmapinit() {
   node14.id = 14;
   node14.type = "S";
   /* all done with nodes */
-  return;
-}
-
-void printNodes(Node *node0) {
-  int i = 0;
-  for (; i < 14; i++) {
-    // int nodeSize = sizeof(Node);
-    char *currentNodeType = nodes[i]->type;
-    printf("node%d type: %s", i, currentNodeType);
-    }
-}
-
-/* EXPERIMENTAL SHIT */
-
-extern Node * expnodes[];
-
-void newNode(int id, char type) {
-  /* mallocs a node, adds its pointer to expnodes */
-  expnode newNode = malloc(sizeof(expNode)); /* for optimization, store sizeof(expNode) in a variable
-					     and use that when loading from a config */
-  newNode.id = id;
-  int adjIDs[4] = {NULL, NULL, NULL, NULL}
-  newnode.type = type;
-  newnode.piece = NULL;
-  expnodes[id] = &newNode;
-}
-
-void attachPieceToNode(int id, Piece *toAdd) {
-  expnodes[id]->piece = toAttach;
-  return;
-}
-
-Piece getPieceFromNode(int id) {
-  Piece toGet = nodes[id]->piece;
-  return toGet;
-}
-
-void attachLinkToNode(int id, int toLink) {
-  /* attaches a single node to Node id */
-  int i = 0;
-  expNode base = *nodes[id];
-  for(; i < 4; i++) {
-    if (base.ajdIDs[i] == NULL) {
-	base.adjIDs[i] = toLink;
-	return;
-      }
-    if (base.adjIDs[i] == toLink) {
-      return;
-    }
-  }
-  return;
-}
-
-void destructNode(int id) {
-  numNodes = sizeof(expnodes);
-  int i = 0;
-  for (; i < numNodes; i++) {
-    if (nodes[i]->id == id) {
-      free(nodes[i]);
-      return;
-    }
-  }
-  printf("node not found");
-  return;
-}
-
-void freeallnodes(Node expNode) {
-  /* THIS NEEDS TO BE RUN AT THE END OF EVERY GAME SO WE DON'T HAVE A MEMORY LEAK 
-   * (if we use a malloc implementation)
-   */
-  numNodes = sizeof(expnodes);
-  int i = 0;
-  for (; i < numNodes; i++) {
-    free(nodes[i]);
-  }
   return;
 }

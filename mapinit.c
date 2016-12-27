@@ -3,37 +3,17 @@
 #include <string.h>
 #include <stdio.h>
 
-Node *nodes[15];
+void testMapInit();
 
-void testmapinit();
-
-void mapinit(char *input) {
-  /* Returns an array of pointers to nodes; each node contains pointers to its adjacent nodes.
-   * If there is no file matching the input, it returns 0.
+NodeList *  mapInit(char *input) {
+  /* Returns a NodeList of pointers to nodes; each node contains pointers to its adjacent nodes.
+   * Reads from string of characters passed to it somewhere else
    */
-  // char mapChoice = *input;
-  int isInit = 0;
-  while (isInit == 0) {
-    if (strcmp(input, "test") == 0) {
-      testmapinit();
-      isInit = 1;
-    }
-  }
-  return;
+  // do stuff
+  return headNode;
 }
 
-void printNodes(Node *node0) {
-  int i = 0;
-  for (; i < 14; i++) {
-    // int nodeSize = sizeof(Node);
-    char *currentNodeType = nodes[i]->type;
-    printf("node%d type: %s", i, currentNodeType);
-    }
-}
-
-/* EXPERIMENTAL SHIT */
-
-void addNodeToList(expNode * toAdd, int id) {
+void addNodeToList(Node * toAdd, int id) {
   int i;
   NodeList * currentNode = allNodes;
   for (i = 0; i < id; i++) {
@@ -46,9 +26,9 @@ void addNodeToList(expNode * toAdd, int id) {
 }
 
 void newNode(int id, char type) {
-  /* mallocs a node, adds its pointer to expnodes */
-  ExpNode newNode = malloc(sizeof(expNode)); /* for optimization, store sizeof(expNode) in a variable
-					     and use that when loading from a config */
+  // mallocs a node, adds its pointer to NodeList
+  Node newNode = malloc(sizeof(Node)); /* for optimization, store sizeof(expNode) in a 
+						variable and use that when loading from a config */
   newNode.id = id;
   int adjIDs[4] = {NULL, NULL, NULL, NULL}
   newnode.type = type;
@@ -57,25 +37,36 @@ void newNode(int id, char type) {
 }
 
 void attachPieceToNode(int id, Piece *toAdd) {
-  expnodes[id]->piece = toAttach;
+  currentNode = findNode(id);
+  currentNode->piece = toAttach;
   return;
 }
 
 Piece getPieceFromNode(int id) {
-  Piece toGet = nodes[id]->piece;
+  currentNode = findNode(id);
+  Piece toGet = currentNode->piece;
   return toGet;
 }
 
+Node * findNode(int id) {
+  NodeList * currentNodeList = allNodes;
+  while (currentNodeList->index != id) {
+    currentNodeList = currentNodeList->next;
+  }
+  Node * currentNode = currentNodeList->nodePointer;
+  return currentNode;
+}
+
 void attachLinkToNode(int id, int toLink) {
-  /* attaches a single node to Node id */
-  int i = 0;
-  expNode base = *nodes[id];
-  for(; i < 4; i++) {
-    if (base.ajdIDs[i] == NULL) {
+  // attaches a single node to Node id
+  int i;
+  Node * base = findNode(id);
+  for(i = 0; i < 4; i++) {
+    if (base->adjIDs[i] == NULL) {
 	base.adjIDs[i] = toLink;
 	return;
       }
-    if (base.adjIDs[i] == toLink) {
+    if (base->adjIDs[i] == toLink) {
       return;
     }
   }
@@ -83,26 +74,23 @@ void attachLinkToNode(int id, int toLink) {
 }
 
 void destructNode(int id) {
+  // frees a single node, but keeps allNodes entry with a null pointer
   numNodes = sizeof(expnodes);
   int i = 0;
-  for (; i < numNodes; i++) {
-    if (nodes[i]->id == id) {
-      free(nodes[i]);
-      return;
-    }
-  }
-  printf("node not found");
+  Node * toDestruct = findNode(id);
+  free(toDestruct);
   return;
 }
 
-void freeAllNodes(Node expNode) {
+void freeAllNodes(Node allNodes) {
   /* THIS NEEDS TO BE RUN AT THE END OF EVERY GAME SO WE DON'T HAVE A MEMORY LEAK 
    * (if we use a malloc implementation)
    */
-  numNodes = sizeof(expnodes);
-  int i = 0;
-  for (; i < numNodes; i++) {
-    free(nodes[i]);
+  NodeList * currentNode = allNodes;
+  while (currentNode->next != NULL) {
+    NodeList * nextNode = currentNode->next;
+    free(currentNode);
+    currentNode = nextNode;
   }
   return;
 }

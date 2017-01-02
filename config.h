@@ -36,6 +36,7 @@ struct environment {
   int typeID;
   int nodeID;
   int pieceID;
+  int playerID;
   int preambleLines;
   int workingLine;
   bool currentLine;

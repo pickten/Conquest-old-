@@ -71,12 +71,12 @@ struct environment *newPieceTypeEnv(struct environment *e){
 }
 
   
-struct environment *NEWNODEEnv(struct environment *e){
+struct environment *NEWNODEEnv(struct environment *e, char * type){
   if(e->node != NULL) {
     return e;
   }
   
-  e->node = NEWNODE(e->nodeID++);
+  e->node = NEWNODE(e->nodeID++, type);
   return e;
 }
 
@@ -164,18 +164,27 @@ struct environment *parseFileEnv(struct config *c, struct environment *e, char *
         e->preambleLines++;
         
         int lineis = atoi(line);         // I know atoi sucks. But it's way simpler for this use case
+        
+        
+        e->playerID = lineis;
+        
+
+      } else if(e->preambleLines == 1) {
+        e->preambleLines++;
+
+        int lineis = atoi(line);
+        
         if(e->typeID < lineis) {
           printf("Fatal error in config: you were a terrible person on line %d and used a piece type in a node before it was defined (\"%s\")", linum, line);
           printf("You can fix this by putting your piece type declarations first. I\'m not doing it for you.");
           fatal = true;
           break;
         }
+
+        attachPieceToNode(e->node->id, newPiece(e->pieceID++, findRB_pieceType(c->types, lineis)));        
         
+        givePlayerPiece(e->playerID, getPieceFromNode(e->node->id));
         
-        attachPieceToNode(e->node->id, newPiece(e->pieceID++, findRB_pieceType(c->types, lineis)));
-      } else if(e->preambleLines == 1) {
-        e->preambleLines++;
-        givePlayerPiece(atoi(line), getPieceFromNode(e->node->id));
       } else if(e->preambleLines == 2) {
         e->node->type = strcpy(malloc(sizeof(char[100])), line);
         e->preambleLines++;

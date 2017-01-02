@@ -211,3 +211,11 @@ boolUndoInput :: UndoDisplay Bool
 boolUndoInput = fmap (`elem` ['y','Y','n','N']) $ loopUntil (`elem` ['y','Y','n','N']) charUndoInput
 
 
+intInput :: Display Int
+intInput = intInput' 0
+  where
+    intInput' n = do
+      c <- charInput
+      if c `elem` ("0123456789" :: String)
+        then intInput' $ (10 * n) + ((read [c]) :: Int)
+        else return n

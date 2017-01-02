@@ -26,7 +26,6 @@ import Control.Arrow as Arrow
 import Control.Monad.RWS
 import Data.Char (toUpper)
 
-import Data.Default (def)
 import Data.Foldable
 
 
@@ -38,7 +37,9 @@ type Display = Display' [[Text]] [Image]
 
 type UndoHelper s = (s, [Menu s])
 
-newtype UndoDisplay' n m s = UndoDisplay {fromUndoDisplay :: Display' (UndoHelper n) (UndoHelper m) (UndoHelper s)} deriving (Eq, Functor)
+newtype UndoDisplay' n m s = UndoDisplay
+  {fromUndoDisplay :: Display' (UndoHelper n) (UndoHelper m) (UndoHelper s)}
+  deriving (Eq, Functor)
 
 type UndoDisplay = UndoDisplay' [[Text]] [Image]
 
@@ -97,7 +98,7 @@ makePrompt  o@(Menu s m) = let
   appender x (Just y) = T.append x y
   
       
-  ts = map (\c -> ("[" `T.append` T.pack [c] `T.append` "] - " `appender`) $ getMenuState $ m!c) $ Map.keys m
+  ts = map (\c -> ("[" `T.append` (case c of {'\n' -> "<RET>"; '\t' -> "<TAB>"; _ -> T.pack [c]}) `T.append` "] - " `appender`) $ getMenuState $ m!c) $ Map.keys m
   in 
   Menu (makeColumns ts) $ fmap makePrompt m
 
@@ -160,3 +161,12 @@ withText ::  Text -> Display s -> Display s
 withText s (Display (x,Quit t,z)) = Display (x, Quit t, z)
 withText s (Display (x, Menu y m, z)) = Display (x, Menu (y++(makeColumns [s])) m, z)
 
+withImage ::  Image -> Display s -> Display s
+withImage s (Display (x,z, Quit t)) = Display (x, z, Quit t)
+withImage s (Display (x, z, Menu y m)) = Display (x, z, Menu (y++[s]) m)
+
+rotary :: (a->Image) -> [a] -> Image
+rotary f [] = V.text V.defAttr "~~~"
+rotary f [x] = f x
+rotary f [x,y] = f x <-> f y
+rotary f (x:y:xs) = f (last xs) <-> f x <-> f y

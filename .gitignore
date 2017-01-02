@@ -39,6 +39,7 @@
 *.hs~
 *.cabal~
 *.yaml~
+*.md~
 
 # Stack files
 /Conquest-Config-Gen/.stack-work/

@@ -78,7 +78,7 @@ bindUndoHere x' = let
     fixify a@(Menu (_,[]) _) = a
     fixify a@(Menu s m) = Menu s $
       Map.insertWith (flip const) '\\' ( awaitString $ (undoMany a) . (read :: String -> Int)) $
-      Map.insertWith (flip const) '/' (undo a) m
+      Map.insertWith (flip const) 'z' (undo a) m
 
 bindUndo :: Menu s -> UndoMenu s
 bindUndo (Quit s) = Quit (s,[])

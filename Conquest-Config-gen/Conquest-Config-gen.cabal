@@ -23,4 +23,7 @@ executable genconfig
                      , mtl >= 2.2 && < 3
                      , text >= 1.2 && < 2
                      , vty >= 5.11 && < 6
+                     , data-default >= 0.7 && < 1
+                     , regex-posix >= 0.95 && < 1
+                     , regex-base >= 0.92 && < 1
                     

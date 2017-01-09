@@ -13,11 +13,13 @@
 (1) Actually link the nodes
 
 -| Piece Implementation |-
-(0) Define pieces, max moves
-(0) Define embarkation status of pieces (e.g. embarked on Elephant, embarked on Galleon)
-(0) Define legal spaces for pieces
-(0) Define killables
-(0) Implement ports
+(1) Define pieces, max moves
+(1) Define embarkation status of pieces (e.g. embarked on Elephant, embarked on Galleon)
+(1) Define legal spaces for pieces
+(1) Define killables
+(1) Implement ports
+(0) Parse a config file
+(0) Let pieces move and kill (as opposed to know what they can kill)
 
 -| Turn Implementation |-
 (0) Define players (moves left, whos turn it is)

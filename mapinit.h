@@ -1,20 +1,7 @@
-/*
-typedef struct Node {
-  struct Node * adj0;
-  struct Node * adj1;
-  struct Node * adj2;
-  struct Node * adj3;
-  int id;
-  char *type;
-} Node;
-*/
-
-// extern Node * nodes[15];
-
 typedef struct NodeList {
-  Node * nodePointer;
-  struct NodeList * next;
-  int index;
+    Node * nodePointer;
+    struct NodeList * next;
+    int index;
 } NodeList;
 
 extern NodeList * allNodes;
@@ -23,10 +10,6 @@ void mapinit(char *input);
 
 void testpmapinit();
 
-// void printNodes(Node *node0);
-
-/* EXPERIMENTAL SHIT */
-
 void newNode(int id, char type);
 
 typedef struct Piece {
@@ -34,19 +17,24 @@ typedef struct Piece {
   int type;
 } Piece;
 
+typedef struct AdjList {
+    // linked list of adjacent nodes because arrays suck shit
+    int id;
+    Struct Adjlist * next;
+} AdjList;
+
 typedef struct Node {
-  /* experimental malloc'd node type */
-  int id;
-  int adjIDs[4];
-  char type;
-  Piece * piece;
+    /* experimental malloc'd node type */
+    int id;
+    adjList * adjIDs;
+    Piece * piece;
+    Node * trebLink;
+    char type;
 } Node;
 
 void destructNode(int id);
 
 void freeallnodes();
 void attachPieceToNode(int id, Piece *toAdd);
-
 Piece getPieceFromNode(int id);
-
 Node * findNode(int id);
